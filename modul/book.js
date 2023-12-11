@@ -13,7 +13,7 @@ const bookSchema = new mongoose.Schema({
         required: true,
     },
     tags: {
-        type: [String],
+        type: Array,
         validate: {
             validator: function(value) {
                 return value && value.length > 0;
@@ -28,7 +28,9 @@ const bookSchema = new mongoose.Schema({
         min: 0,
         required: function () {
             return this.isPublished
-        }
+        },
+        get: val => Math.round(val),
+        set: val => Math.round(val)
     }
 })
 const Book = mongoose.model('Book', bookSchema);
