@@ -22,3 +22,4 @@ function validatorName(name) {
 
 module.exports.Category =Category
 module.exports.validatorName =validatorName
+module.exports = categorySchema

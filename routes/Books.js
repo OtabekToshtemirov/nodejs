@@ -39,7 +39,7 @@ Route.put('/:id', async (req, res) => {
     const options = {new: true}
     const updatedBook = await Book.findByIdAndUpdate(req.params.id, {
         title: req.body.title,
-        author: req.body.author,
+        authors: req.body.author,
         tags: req.body.tags,
         isPublished: req.body.isPublished,
         price: req.body.price
