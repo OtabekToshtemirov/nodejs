@@ -1,6 +1,5 @@
-const joi = require('joi')
-const mongoose = require('mongoose')
-
+const joi = require('joi');
+const mongoose = require('mongoose');
 
 const categorySchema = new mongoose.Schema({
     name: {
@@ -8,18 +7,19 @@ const categorySchema = new mongoose.Schema({
         required: true,
         lowerCase: true,
     }
+});
 
-})
-
-const Category = mongoose.model('Category', categorySchema)
+const Category = mongoose.model('Category', categorySchema);
 
 function validatorName(name) {
     const schema = joi.object({
         name: joi.string().required()
-    })
-    return schema.validate(name)
+    });
+    return schema.validate(name);
 }
 
-module.exports.Category =Category
-module.exports.validatorName =validatorName
-module.exports = categorySchema
+module.exports = {
+    Category: Category,
+    validatorName: validatorName,
+    categorySchema: categorySchema
+};

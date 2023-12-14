@@ -1,25 +1,31 @@
 const mongoose = require('mongoose')
 const Joi = require('joi')
-const categorySchema = require('../modul/category')
+const {categorySchema} = require('../modul/category')
 
 const courseSchema = new mongoose.Schema({
     tags: {
-        type: Array,
-        required: true,
+        type:[String]
     },
-    title:String,
-    trainer:String,
+    title:{
+        type:String,
+        required:true,
+        trim:true,
+        minLength:3,
+        maxLength:250
+    },
+    trainer: {
+        type:String,
+        required:true
+    },
     status: {
         type: String,
         enum: ['Active', 'Inactive'],
-        required: true,
         default: 'Inactive',
     },
 
     category: {
         type: categorySchema,
         required: true,
-        // Set a default category ID
     },
 })
 
@@ -31,7 +37,7 @@ function validateCourse(course) {
         title : Joi.string().required().min(3).max(50),
         trainer : Joi.string().required(),
         status: Joi.string().required(),
-        tags: Joi.array().items(Joi.string()).required(),
+        tags: Joi.array().items(Joi.string()),
         categoryId: Joi.string().required(),
     })
 
