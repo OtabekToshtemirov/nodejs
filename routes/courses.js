@@ -1,6 +1,6 @@
-const { Course, validateCourse } = require('../modul/course');
+const {Course, validateCourse} = require('../models/course');
 const mongoose = require('mongoose');
-const { Category } = require('../modul/category');
+const {Category} = require('../models/category');
 const express = require('express');
 
 const router = express.Router();
@@ -8,7 +8,7 @@ const router = express.Router();
 router.post('/', async (req, res) => {
     console.log('Request body:', req.body);
 
-    const { error } = validateCourse(req.body);
+    const {error} = validateCourse(req.body);
     if (error) {
         return res.status(400).send(error.details[0].message);
     }
@@ -34,6 +34,7 @@ router.post('/', async (req, res) => {
         trainer: req.body.trainer,
         tags: req.body.tags,
         status: req.body.status,
+        fee: req.body.fee,
     });
 
     course = await course.save();
@@ -57,7 +58,7 @@ router.get('/:id', async (req, res) => {
 });
 
 router.put('/:id', async (req, res) => {
-    const { error } = validateCourse(req.body);
+    const {error} = validateCourse(req.body);
     if (error) {
         return res.status(400).send(error.details[0].message);
     }
@@ -85,8 +86,9 @@ router.put('/:id', async (req, res) => {
                 _id: category._id,
                 name: category.name,
             },
+            fee: req.body.fee,
         },
-        { new: true }
+        {new: true}
     );
 
     res.send(course);
@@ -98,7 +100,7 @@ router.delete('/:id', async (req, res) => {
         return res.status(400).send('Xatolik yuz berdi');
     }
 
-    const deletedCourse = await course.deleteOne({ _id: req.params.id });
+    const deletedCourse = await course.deleteOne({_id: req.params.id});
     res.send(deletedCourse);
 });
 

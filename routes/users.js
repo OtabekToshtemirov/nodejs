@@ -1,7 +1,7 @@
 
 const express = require('express')
 const router = express.Router()
-const {User, validateUser} = require('../modul/user')
+const {User, validateUser} = require('../models/user')
 
 
 // create a new user

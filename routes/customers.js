@@ -1,4 +1,4 @@
-const {Customer, validateCustomer} = require('../modul/customer')
+const {Customer, validateCustomer} = require('../models/customer')
 const express = require('express')
 const router = express.Router()
 
@@ -28,6 +28,7 @@ router.post('/', async (req, res) => {
         name: req.body.name,
         isVip: req.body.isVip,
         phone: req.body.phone,
+        bonusPoints: req.body.bonusPoints
     })
     customer = await customer.save()
     res.status(201).send(customer)

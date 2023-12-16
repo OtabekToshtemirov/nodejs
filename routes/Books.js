@@ -1,4 +1,4 @@
-const {Book, validateBook} = require('../modul/book');
+const {Book, validateBook} = require('../models/book');
 const express = require('express');
 const Route = express.Router();
 

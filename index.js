@@ -3,6 +3,7 @@ const BookRoute = require('./routes/books');
 const CustomerRoute = require('./routes/customers');
 const UserRoute = require('./routes/users');
 const CourseRoute = require('./routes/courses')
+const Enrollments = require('./routes/enrollments');
 const express = require('express');
 const app = express();
 const mongoose = require('mongoose');
@@ -20,6 +21,7 @@ app.use('/api/books', BookRoute);
 app.use('/api/customers', CustomerRoute);
 app.use('/api/users', UserRoute);
 app.use('/api/courses', CourseRoute)
+app.use('/api/enrollments', Enrollments)
 
 app.listen(3000, () => console.log('App is running on port 3000'));
 

@@ -1,6 +1,6 @@
 const express = require('express')
 const router = express.Router()
-const { validatorName, Category } =require('../modul/category')
+const { validatorName, Category } =require('../models/category')
 
 
 
