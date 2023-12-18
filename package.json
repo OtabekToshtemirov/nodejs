@@ -10,6 +10,7 @@
   "author": "Otabek Toshtemirov",
   "license": "ISC",
   "dependencies": {
+    "bcrypt": "^5.1.1",
     "crypto": "^1.0.1",
     "express": "^4.18.2",
     "joi": "^17.11.0",

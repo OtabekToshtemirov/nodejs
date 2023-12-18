@@ -1,8 +1,8 @@
-
 const express = require('express')
 const router = express.Router()
 const {User, validateUser} = require('../models/user')
 const _ = require('lodash')
+const bcrypt = require("bcrypt");
 
 
 // create a new user
@@ -11,9 +11,12 @@ router.post('/', async (req, res) => {
     if (error) return res.status(400).send(error.details[0].message)
 
     let user = await User.findOne({email: req.body.email})
-    if (user) return res.status(400).send('User already exists!')
+    if (user) return res.status(400).send('With this email user already exists!')
 
-    user = await new User(_.pick(req.body, [ 'name', 'email', 'password']));
+    user = await new User(_.pick(req.body, ['name', 'email', 'password']));
+    const saltRounds = 10;
+    user.password = await bcrypt.hash(user.password, saltRounds);
+
     await user.save()
     res.send(_.pick(user, ['_id', 'name', 'email']))
 })
@@ -21,7 +24,7 @@ router.post('/', async (req, res) => {
 router.get('/', async (req, res) => {
     const users = await User.find()
     if (!users) return res.status(404).send('No users found!')
-    res.send(users)
+    res.send(users.map(user => _.pick(user, ['_id', 'name', 'email'])))
 })
 
 // get user by id
