@@ -8,9 +8,14 @@ const Auth = require('./auth');
 const express = require('express');
 const app = express();
 const mongoose = require('mongoose');
+const config = require('config');
 
 
 
+if (!config.get('jwtPrivateKey')) {
+    console.error('FATAL ERROR: jwtPrivateKey is not defined.');
+    process.exit(1);
+}
 mongoose.connect('mongodb://localhost/test')
     .then(() => console.log('MongoDBga ulandi'))
     .catch((err) => console.log( 'Xatolik yuz berdi',err));

@@ -5,8 +5,9 @@ const mongoose = require("mongoose")
 const {Course} = require('../models/course');
 const express = require("express")
 const router = express.Router()
+const auth = require('../middleware/auth')
 
-router.post('/', async (req, res) => {
+router.post('/',auth, async (req, res) => {
     const {error} = validateEnrollment(req.body)
     if (error)
         return res.status(400).send(error.details[0].message)
@@ -48,14 +49,14 @@ router.post('/', async (req, res) => {
     res.send(enrollment)
 })
 
-router.get('/', async (req, res) => {
+router.get('/',auth,  async (req, res) => {
     const enrollments = await Enrollment.find()
     if (enrollments.length === 0) return res.status(404).send('No enrollments found')
     res.send(enrollments)
 })
 
 
-router.get('/:id', async (req, res) => {
+router.get('/:id', auth, async (req, res) => {
     const enrollment = await Enrollment.findById(req.params.id)
     if (!enrollment) return res.status(404).send('Enrollment not found')
     res.send(enrollment)

@@ -1,9 +1,10 @@
 const {Book, validateBook} = require('../models/book');
 const express = require('express');
 const Route = express.Router();
+const auth = require('../middleware/auth')
 
 
-Route.get('/', async (req, res) => {
+Route.get('/',auth, async (req, res) => {
     const book = await Book.find()
     if (!book) {
         return res.status(400).send('Xatolik yuz berdi')
@@ -11,7 +12,7 @@ Route.get('/', async (req, res) => {
     res.send(book)
 })
 
-Route.post('/', async (req, res) => {
+Route.post('/',auth, async (req, res) => {
     const { error } = validateBook(req.body)
     if (error) {
         return res.status(400).send(error.details[0].message)
@@ -27,7 +28,7 @@ Route.post('/', async (req, res) => {
     res.send(savedBook)
 })
 
-Route.put('/:id', async (req, res) => {
+Route.put('/:id',auth, async (req, res) => {
     const { error } = validateBook(req.body)
     if (error) {
         return res.status(400).send(error.details[0].message)
@@ -47,7 +48,7 @@ Route.put('/:id', async (req, res) => {
     res.send(updatedBook)
 })
 
-Route.delete('/:id', async (req, res) => {
+Route.delete('/:id',auth, async (req, res) => {
     const book = await Book.findById(req.params.id);
     if (!book) {
         return res.status(400).send('Xatolik yuz berdi');

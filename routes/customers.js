@@ -1,6 +1,7 @@
 const {Customer, validateCustomer} = require('../models/customer')
 const express = require('express')
 const router = express.Router()
+const auth = require('../middleware/auth')
 
 router.get('/', async (req, res) => {
     const customers = await Customer.find()
@@ -20,6 +21,7 @@ router.get('/:id', async (req, res) => {
 })
 
 router.post('/', async (req, res) => {
+
     const {error} = validateCustomer(req.body)
     if (error) {
         return res.status(400).json({error: error.details[0].message})
@@ -34,7 +36,7 @@ router.post('/', async (req, res) => {
     res.status(201).send(customer)
 })
 
-router.put('/:id', async (req, res) => {
+router.put('/:id', auth,async (req, res) => {
     const {error} = validateCustomer(req.body)
     if (error) {
         return res.status(400).json({error: error.details[0].message})

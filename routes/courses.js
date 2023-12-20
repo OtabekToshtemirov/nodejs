@@ -2,10 +2,10 @@ const {Course, validateCourse} = require('../models/course');
 const mongoose = require('mongoose');
 const {Category} = require('../models/category');
 const express = require('express');
-
+const auth = require('../middleware/auth');
 const router = express.Router();
 
-router.post('/', async (req, res) => {
+router.post('/',auth, async (req, res) => {
     console.log('Request body:', req.body);
 
     const {error} = validateCourse(req.body);
@@ -41,7 +41,7 @@ router.post('/', async (req, res) => {
     res.send(course);
 });
 
-router.get('/', async (req, res) => {
+router.get('/',auth, async (req, res) => {
     const courses = await Course.find();
     if (!courses || courses.length === 0) {
         return res.status(400).send('Xatolik yuz berdi');
@@ -49,7 +49,7 @@ router.get('/', async (req, res) => {
     res.send(courses);
 });
 
-router.get('/:id', async (req, res) => {
+router.get('/:id',auth, async (req, res) => {
     const course = await Course.findById(req.params.id);
     if (!course) {
         return res.status(400).send('Xatolik yuz berdi');
@@ -57,7 +57,7 @@ router.get('/:id', async (req, res) => {
     res.send(course);
 });
 
-router.put('/:id', async (req, res) => {
+router.put('/:id',auth,  async (req, res) => {
     const {error} = validateCourse(req.body);
     if (error) {
         return res.status(400).send(error.details[0].message);
@@ -94,7 +94,7 @@ router.put('/:id', async (req, res) => {
     res.send(course);
 });
 
-router.delete('/:id', async (req, res) => {
+router.delete('/:id', auth, async (req, res) => {
     const course = await Course.findById(req.params.id);
     if (!course) {
         return res.status(400).send('Xatolik yuz berdi');
