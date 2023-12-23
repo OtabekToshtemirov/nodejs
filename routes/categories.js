@@ -7,57 +7,79 @@ const admin = require('../middleware/admin')
 
 
 router.post('/',auth ,async (req, res) => {
-
-    const category = await new Category({
-        name: req.body.name
-    })
-    const savedCategory = await category.save()
-    res.send(savedCategory)
+    try {
+        const { error } = validatorName(req.body)
+        if (error) {
+            return res.status(400).send(error.details[0].message)
+        }
+        const category = await new Category({
+            name: req.body.name
+        })
+        const savedCategory = await category.save()
+        res.send(savedCategory)
+    }
+    catch (e) {
+        res.status(400).send(e.message)
+    }
 })
 
 router.get('/', auth, async (req, res) => {
 
-    const category = await Category.find()
-    if (!category) {
-        return res.status(400).send('Xatolik yuz berdi')
+    try {
+        const category = await Category.find()
+        res.send(category)
     }
-    res.send(category)
+    catch (e) {
+        res.status(400).send(e.message)
+    }
 })
 
 router.get('/:id',auth, async (req, res) => {
-    const category = await Category.findById(req.params.id)
-    if (!category) {
-        return res.status(400).send('Xatolik yuz berdi')
+    try {
+        const category = await Category.findById(req.params.id)
+        if (!category) {
+            return res.status(400).send('Xatolik yuz berdi')
+        }
+        res.send(category)
     }
-    res.send(category)
+    catch (e) {
+        res.status(400).send(e.message)
+    }
 })
 
 router.put('/:id',auth, async (req, res) => {
-    const { error } = validatorName(req.body)
-    if (error) {
-        return res.status(400).send(error.details[0].message)
+
+    try {
+        const { error } = validatorName(req.body)
+        if (error) {
+            return res.status(400).send(error.details[0].message)
+        }
+        const category = await Category.findById(req.params.id)
+        if (!category) {
+            return res.status(400).send('Xatolik yuz berdi')
+        }
+        category.set({
+            name: req.body.name
+        })
+        const updatedCategory = await category.save()
+        res.send(updatedCategory)
     }
-    const category = await Category.findById(req.params.id)
-    if (!category) {
-        return res.status(400).send('Xatolik yuz berdi')
+    catch (e) {
+        res.status(400).send(e.message)
     }
-    category.set({
-        name: req.body.name
-    })
-    const updatedCategory = await category.save()
-    res.send(updatedCategory)
 })
 
-router.delete('/:id',[auth, admin], async (req, res) => {
-
-    const category = await Category.findById(req.params.id)
-    if (!category) {
-        return res.status(400).send('Xatolik yuz berdi')
+router.delete('/:id',[ auth, admin ], async (req, res) => {
+    try {
+        const category = await Category.findByIdAndDelete(req.params.id)
+        if (!category) {
+            return res.status(400).send('Xatolik yuz berdi')
+        }
+        res.send(category)
     }
-    const deletedCategory = await category.deleteOne(
-        { _id: req.params.id }
-    )
-    res.send(deletedCategory)
+    catch (e) {
+        res.status(400).send(e.message)
+    }
 })
 
 module.exports = router;
