@@ -9,9 +9,10 @@ require('./startup/config')();
 
 const port = process.env.PORT || 3000;
 
-app.listen(port, () => winston.info(`App is running on port ${port}...`));
 
+const server = app.listen(port, () => {
+    winston.info(`${port}chi portni eshitishni boshladim...`)
+});
 
-
-
+module.exports = server;
 
