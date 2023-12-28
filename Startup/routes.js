@@ -7,10 +7,9 @@ const CourseRoute = require("../routes/courses");
 const Enrollments = require("../routes/Enrollments");
 const Auth = require("../auth");
 const errorMiddleware = require("../middleware/error");
-const app = express();
 
 
-module.exports = function () {
+module.exports = function (app) {
 
     app.use(express.json());
     app.use('/api/categories', CategoryRoute);

@@ -19,7 +19,7 @@ router.post('/',auth ,async (req, res) => {
 
 })
 
-router.get('/', auth, async (req, res) => {
+router.get('/', async (req, res) => {
 
     const category = await Category.find()
     res.send(category)
@@ -46,7 +46,7 @@ router.put('/:id',auth, async (req, res) => {
     }, { new: true })
     if (!category) {
         return res.status(400).send('Bunday id li category mavjud emas')
-    };
+    }
     res.send(category)
 })
 
