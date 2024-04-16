@@ -1,4 +1,4 @@
 {
   "jwtPrivateKey": "1235",
-  "db": "mongodb://localhost/test"
+  "db": "mongodb+srv://shoraqorgon:z5aWu6POS8ZzwiTE@telegrambot.wscpeif.mongodb.net/"
 }
